@@ -23,20 +23,17 @@ publishBtn.addEventListener("click", ()=>{
 })
 
 onValue(endorsementsInDB, (snapshot)=>{
-    let itemsArray = Object.entries(snapshot.val())
-    clearEndorsmentsEll()
+    let endorsmentArray = Object.entries(snapshot.val())
+    clearEndorsmentsEl()
 
-    for(let i =0; i < itemsArray.length; i++){
-        let currentItem = itemsArray[i]
-        let currentItemValue = currentItem[1]
-        renderEndorsements(currentItemValue)
+    for(let i =0; i < endorsmentArray.length; i++){
+        let currentEndorsment = endorsmentArray[i]
+        renderEndorsements(currentEndorsment)
     }
-    clearInput()
-   
-
 })
 
-const clearEndorsmentsEll=()=> {
+
+const clearEndorsmentsEl=()=> {
     endorsmentsEl.innerHTML = ""
 }
 
@@ -47,10 +44,19 @@ const clearInput = () =>{
 
 // render Endorsements
 const renderEndorsements = (endorsment)=>{
+    let endorsmentID = endorsment[0]
+    let endorsmentValue = endorsment[1]
+
+
+
     let newListItem = document.createElement("li")
-    newListItem.textContent = endorsment
+    newListItem.textContent = endorsmentValue
+    newListItem.addEventListener("click", () => {
+        let idOfEndorsmentinDB = ref(database, `endorsements/${endorsmentID}`)
+        
+        remove(idOfEndorsmentinDB)
+    })
     endorsmentsEl.append(newListItem)
-    clearInput()
 }
 
 
